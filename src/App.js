@@ -1,37 +1,33 @@
 import React from 'react';
-import logo from './Icon.svg';
 import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { TinaProvider, TinaCMS } from 'tinacms'
+
+import PageContent from './PageContent'
+import Menu from './Menu'
 
 function App() {
+  const cms = new TinaCMS({
+    sidebar: true,
+    enabled: true
+  })
+
+  // setTimeout(cms.enable, 1)
+
   return (
     <div className="App">
-      <PageContent />
+      <TinaProvider cms={cms}>
+        <Router>
+          <Menu />
+          <Switch>
+            <Route exact path="/">
+              <PageContent />
+            </Route>
+          </Switch>
+        </Router>
+      </TinaProvider>
     </div>
   );
 }
 
 export default App;
-
-const pageData = {
-  title: 'Tina is not a CMS',
-  body: 'It is a toolkit for creating a custom CMS.',
-};
-
-function PageContent() {
-  return (
-    <section className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <h1>{pageData.title}</h1>
-      <p>{pageData.body}</p>
-      <EditButton />
-    </section>
-  );
-}
-
-function EditButton() {
-  return (
-    <button onClick={() => window.alert("Tina isn't configured yet!")}>
-      Edit This Site
-    </button>
-  );
-}
